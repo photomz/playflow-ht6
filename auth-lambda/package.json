@@ -1,0 +1,24 @@
+{
+  "name": "playflow-auth",
+  "description": "Serverless authentication Service for Playflow API. Separate from EC2 for complete isolation/security",
+  "version": "0.1.0",
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "query-string": "^7.1.1",
+    "source-map-support": "^0.5.19",
+    "tslib": "^2.4.0",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.5.11",
+    "aws-lambda": "^1.0.7",
+    "dotenv": "^10.0.0",
+    "serverless-prune-plugin": "^1.5.1",
+    "serverless-pseudo-parameters": "^2.5.0",
+    "serverless-stack-output": "^0.2.3",
+    "serverless-webpack": "^5.3.5",
+    "ts-loader": "^9.2.3",
+    "typescript": "^4.7.4",
+    "webpack": "^5.44.0"
+  }
+}

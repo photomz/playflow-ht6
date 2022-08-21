@@ -1,0 +1,87 @@
+service: playflow-auth
+
+# Only works with Serverless v3 - next major version
+useDotenv: true
+
+functions:
+  access:
+    handler: authorise.access
+    memorySize: 128
+    tags:
+      project: playflow
+      service: ${self:service}
+      component: lambda
+    events:
+      - http:
+          path: callback
+          method: get
+    environment:
+      # The default value `''` is required if BAZ is not defined.
+      # Leaving it out means you want Serverless to throw an error if the env
+      # var is not set by either the system or in a dotenv file
+      SPOTIFY_CLIENT_ID: ${self:custom.dotenv.SPOTIFY_CLIENT_ID}
+      SPOTIFY_CLIENT_SECRET: ${self:custom.dotenv.SPOTIFY_CLIENT_SECRET}
+  refresh:
+    handler: authorise.refresh
+    memorySize: 128
+    tags:
+      project: playflow
+      service: ${self:service}
+      component: lambda
+    events:
+      - http:
+          path: refresh
+          method: get
+    environment:
+      # The default value `''` is required if BAZ is not defined.
+      # Leaving it out means you want Serverless to throw an error if the env
+      # var is not set by either the system or in a dotenv file
+      SPOTIFY_CLIENT_ID: ${self:custom.dotenv.SPOTIFY_CLIENT_ID}
+      SPOTIFY_CLIENT_SECRET: ${self:custom.dotenv.SPOTIFY_CLIENT_SECRET}
+
+custom:
+  output:
+    file: ./stack.${self:provider.stage}.json
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+  # https://github.com/neverendingqs/serverless-dotenv-example/blob/main/serverless.yml#L13
+  dotenv: ${file(dotenv.js)}
+
+plugins:
+  - serverless-stack-output
+  - serverless-pseudo-parameters
+  - serverless-webpack
+  - serverless-prune-plugin
+
+provider:
+  name: aws
+  region: ap-southeast-1
+  runtime: nodejs14.x
+  stage: dev
+  lambdaHashingVersion: "20201221"
+  versionFunctions: false
+  endpointType: REGIONAL
+  tracing:
+    lambda: true
+  tags:
+    project: playflow
+    service: ${self:service}
+    component: cloudformation
+  environment:
+    DEBUG: "*"
+    NODE_ENV: ${self:provider.stage}
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
+  apiGateway:
+    minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
+    shouldStartNameWithService: true
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - xray:PutTraceSegments
+            - xray:PutTelemetryRecords
+          Resource: "*"
+
+variablesResolutionMode: "20210219"

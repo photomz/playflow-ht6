@@ -1,0 +1,12 @@
+{
+  "name": "playflow",
+  "version": "1.0.0",
+  "main": "ec2/index.ts",
+  "author": "Markus Zhang, Vir Chaudhury",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@types/recoil": "^0.0.9",
+    "recoil": "^0.7.5"
+  }
+}

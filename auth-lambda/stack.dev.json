@@ -1,0 +1,4 @@
+{
+  "ServiceEndpoint": "https://vrm5n79tz6.execute-api.ap-southeast-1.amazonaws.com/dev",
+  "ServerlessDeploymentBucketName": "playflow-auth-dev-serverlessdeploymentbucket-1vuaaw489w9ja"
+}
